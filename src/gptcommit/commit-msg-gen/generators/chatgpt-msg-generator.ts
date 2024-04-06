@@ -60,7 +60,7 @@ function generateCommitMessageChatCompletionPrompt(
 
   chatContextAsCompletionRequest.push({
     role: ChatCompletionRequestMessageRoleEnum.User,
-    content: diff,
+    content: JSON.stringify(diff),
   });
 
   return chatContextAsCompletionRequest;
@@ -86,8 +86,13 @@ export class ChatgptMsgGenerator implements MsgGenerator {
 
   async generate(diff: string, delimeter?: string) {
     const messages = generateCommitMessageChatCompletionPrompt(diff);
+    messages.forEach((msg) => {
+      if (msg.role === ChatCompletionRequestMessageRoleEnum.System) {
+        msg.content = this.config?.customPrompt || msg.content;
+      }
+    });
     const { data } = await this.openAI.createChatCompletion({
-      model: this.config?.gptVersion || defaultModel,
+      model: this.config?.customModelName || this.config?.gptVersion || defaultModel,
       messages: messages,
       temperature: this.config?.temperature || defaultTemperature,
       ["max_tokens"]: this.config?.maxTokens || defaultMaxTokens,

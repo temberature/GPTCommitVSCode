@@ -64,7 +64,7 @@
         "gptcommit.general.generator": {
           "type": "string",
           "enum": [
-            "ChatGPT"
+            "ChatGPT", "Custom"
           ],
           "default": "ChatGPT",
           "description": "Generator used to create commit messages"
@@ -97,6 +97,16 @@
           ],
           "default": "gpt-3.5-turbo-16k",
           "description": "Version of GPT used by OpenAI"
+        },
+        "gptcommit.openAI.customModelName": {
+          "type": "string",
+          "default": "",
+          "description": "Model to use for generating AI commit messages"
+        },
+        "gptcommit.openAI.customPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Prompt to use for generating AI commit messages"
         },
         "gptcommit.openAI.customEndpoint": {
           "type": "string",
